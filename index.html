@@ -1,0 +1,1178 @@
+<title>Exhale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  color-scheme: light;
+  --ground:#E7E7E9;
+  --surface:#FFFFFF;
+  --ink:#171718;
+  --ink-2:#8B8B92;
+  --ink-3:#B7B7BE;
+  --line:#EDEDEF;
+  --line-2:#E3E3E6;
+  --hover:#F6F6F7;
+  --sel:#F0F0F1;
+  --fill:#1B1B1D;
+  --rose:#D8434F;
+  --rose-bg:#FDECEE;
+  --shadow:0 1px 2px rgba(0,0,0,.04), 0 14px 38px rgba(0,0,0,.09);
+  --pop-shadow:0 2px 6px rgba(0,0,0,.05), 0 18px 44px rgba(0,0,0,.14);
+  --font:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--surface);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:14px;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+button{ font-family:inherit; }
+:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; border-radius:6px; }
+ul{ list-style:none; margin:0; padding:0; }
+h1,h2,h3{ margin:0; font-weight:600; }
+
+/* ---------- frame ---------- */
+.frame{ min-height:100dvh; }
+.card{ display:flex; background:var(--surface); min-height:100dvh; }
+
+@media (min-width:900px){
+  body{ background:var(--ground); }
+  .frame{ padding:26px; }
+  .card{
+    max-width:1180px; margin:0 auto;
+    border-radius:20px; box-shadow:var(--shadow);
+    overflow:hidden; height:calc(100dvh - 52px); min-height:560px;
+  }
+  .sidebar{ overflow-y:auto; }
+}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  width:266px; flex:none;
+  padding:20px 14px 24px;
+  display:flex; flex-direction:column; gap:22px;
+  background:var(--surface);
+}
+.brand{ display:flex; align-items:center; gap:11px; padding:0 6px; }
+.mark{
+  width:42px; height:42px; flex:none; border-radius:12px;
+  background:var(--fill); display:grid; place-items:center;
+}
+.brand-name{ font-size:17px; font-weight:700; letter-spacing:-.015em; line-height:1.15; }
+.brand-sub{
+  font-size:12.5px; color:var(--ink-2); background:none; border:0; padding:0;
+  cursor:text; text-align:left; font-weight:400;
+}
+.brand-sub:hover{ color:var(--ink); }
+.name-input{
+  font:inherit; font-size:12.5px; width:130px; border:1px solid var(--line-2);
+  border-radius:6px; padding:1px 5px; outline:none; color:var(--ink);
+}
+
+.group-label{ font-size:15px; font-weight:700; letter-spacing:-.01em; padding:0 8px 8px; }
+.nav-list{ display:flex; flex-direction:column; gap:2px; }
+.nav-item{ position:relative; display:flex; align-items:center; }
+.nav{
+  flex:1; min-width:0; display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:10px; border:0; background:transparent;
+  font-size:14.5px; font-weight:500; color:var(--ink); cursor:pointer; text-align:left;
+}
+.nav:hover{ background:var(--hover); }
+.nav.active{ background:var(--sel); }
+.nav .emoji{ font-size:15px; line-height:1; flex:none; }
+.nav .label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.nav .count{
+  margin-left:auto; padding-left:8px; color:var(--ink-3);
+  font-size:13px; font-variant-numeric:tabular-nums;
+}
+.nav-item .dots{
+  position:absolute; right:8px; width:24px; height:24px; border:0; border-radius:6px;
+  background:transparent; color:var(--ink-3); cursor:pointer; display:none;
+  align-items:center; justify-content:center; font-size:15px; line-height:1;
+}
+.nav-item:hover .dots{ display:flex; background:var(--sel); }
+.nav-item:hover .nav .count{ opacity:0; }
+.nav-item.menu-open .dots{ display:flex; background:var(--sel); }
+
+.add-row{
+  display:flex; align-items:center; gap:10px; width:100%;
+  padding:9px 10px; border:0; border-radius:10px; background:transparent;
+  color:var(--ink); font-size:14.5px; font-weight:500; cursor:pointer; text-align:left;
+}
+.add-row:hover{ background:var(--hover); }
+.add-row .kbds{ margin-left:auto; display:flex; gap:4px; }
+.kbd{
+  display:inline-flex; min-width:21px; height:21px; align-items:center; justify-content:center;
+  border:1px solid var(--line-2); border-radius:6px; background:#fff;
+  font-size:11px; color:var(--ink-2); padding:0 5px;
+}
+
+.newlist{ padding:8px 10px 4px; display:flex; flex-direction:column; gap:9px; }
+.newlist input{
+  font:inherit; font-size:14px; width:100%; padding:7px 9px;
+  border:1px solid var(--line-2); border-radius:9px; outline:none; color:var(--ink);
+}
+.newlist input:focus{ border-color:#C9C9CE; box-shadow:0 0 0 3px rgba(23,23,24,.05); }
+.emoji-row{ display:flex; flex-wrap:wrap; gap:3px; }
+.emoji-pick{
+  width:27px; height:27px; border:1px solid transparent; border-radius:7px;
+  background:transparent; font-size:14px; cursor:pointer; line-height:1;
+}
+.emoji-pick:hover{ background:var(--hover); }
+.emoji-pick.on{ border-color:var(--fill); background:var(--hover); }
+
+/* ---------- main ---------- */
+.main{ flex:1; min-width:0; display:flex; flex-direction:column; border-left:1px solid var(--line); }
+.main-scroll{ flex:1; overflow-y:auto; }
+.main-inner{ width:100%; max-width:820px; padding:30px 30px 120px; }
+
+.greet{ font-size:28px; font-weight:700; letter-spacing:-.025em; text-wrap:balance; }
+.greet .name-btn{
+  border:0; background:none; padding:0; font:inherit; color:inherit; cursor:text;
+  border-bottom:1.5px dashed transparent;
+}
+.greet .name-btn:hover{ border-bottom-color:var(--ink-3); }
+.today-line{ margin-top:5px; font-size:14.5px; color:var(--ink-2); }
+
+/* ---------- composer ---------- */
+.composer{
+  margin-top:24px; display:flex; align-items:center; gap:10px;
+  padding:9px 9px 9px 13px; background:#fff;
+  border:1px solid var(--line-2); border-radius:12px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+  transition:border-color .15s, box-shadow .15s;
+}
+.composer:focus-within{ border-color:#C9C9CE; box-shadow:0 0 0 4px rgba(23,23,24,.05); }
+.composer input.task-input{
+  flex:1; min-width:0; border:0; outline:0; background:transparent;
+  font:inherit; font-size:15px; color:var(--ink);
+}
+.composer input.task-input::placeholder{ color:var(--ink-3); }
+.ghost-box{
+  width:19px; height:19px; flex:none; border-radius:6px;
+  border:1.6px solid var(--line-2); background:#fff;
+}
+.iconbtn{
+  width:32px; height:32px; flex:none; display:grid; place-items:center;
+  border:0; border-radius:8px; background:transparent; color:var(--ink-2); cursor:pointer;
+  transition:background .14s, color .14s;
+}
+.iconbtn:hover{ background:var(--hover); color:var(--ink); }
+.iconbtn.on{ background:var(--sel); color:var(--ink); }
+.chip{
+  display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 9px;
+  border:1px solid var(--line-2); border-radius:8px; background:#fff;
+  font-size:13.5px; font-weight:500; color:var(--ink); cursor:pointer; white-space:nowrap;
+}
+.chip:hover{ background:var(--hover); }
+.chip .cap{ max-width:128px; overflow:hidden; text-overflow:ellipsis; }
+.chip.date-chip{ color:var(--ink-2); }
+.chip.date-chip.set{ color:var(--rose); background:var(--rose-bg); border-color:transparent; }
+.submit{
+  width:32px; height:32px; flex:none; border:0; border-radius:8px;
+  background:var(--fill); color:#fff; display:grid; place-items:center; cursor:pointer;
+}
+.submit:disabled{ background:var(--line-2); color:var(--ink-3); cursor:default; }
+
+/* ---------- popovers ---------- */
+.popwrap{ position:relative; display:flex; }
+.pop{
+  position:absolute; top:calc(100% + 8px); z-index:60;
+  background:#fff; border:1px solid var(--line); border-radius:13px;
+  box-shadow:var(--pop-shadow); padding:6px; min-width:180px;
+  max-width:min(300px, calc(100vw - 28px));
+  animation:popIn 140ms cubic-bezier(.2,.8,.3,1) both;
+}
+.pop.right{ right:0; }
+.pop.left{ left:0; }
+.pop.up{ top:auto; bottom:calc(100% + 8px); }
+@keyframes popIn{ from{ opacity:0; transform:translateY(-4px) scale(.97) } to{ opacity:1; transform:none } }
+.pop-item{
+  display:flex; align-items:center; gap:9px; width:100%;
+  padding:8px 9px; border:0; border-radius:8px; background:transparent;
+  font-size:14px; font-weight:500; color:var(--ink); cursor:pointer; text-align:left;
+}
+.pop-item:hover{ background:var(--hover); }
+.pop-item.sel{ background:var(--sel); }
+.pop-item.danger{ color:var(--rose); }
+.pop-sep{ height:1px; background:var(--line); margin:5px 4px; }
+
+.cal{ width:262px; padding:10px 10px 8px; }
+.cal-head{ display:flex; align-items:center; justify-content:space-between; padding:0 2px 8px; }
+.cal-title{ font-size:14px; font-weight:600; }
+.cal-nav{
+  width:26px; height:26px; border:0; border-radius:7px; background:transparent;
+  color:var(--ink-2); cursor:pointer; display:grid; place-items:center;
+}
+.cal-nav:hover{ background:var(--hover); color:var(--ink); }
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cal-dow{ font-size:11px; color:var(--ink-3); text-align:center; padding:3px 0 5px; font-weight:500; }
+.cal-day{
+  aspect-ratio:1; border:0; border-radius:8px; background:transparent;
+  font:inherit; font-size:13px; color:var(--ink); cursor:pointer;
+  font-variant-numeric:tabular-nums;
+}
+.cal-day:hover{ background:var(--hover); }
+.cal-day.dim{ color:var(--ink-3); }
+.cal-day.today{ color:var(--rose); font-weight:700; }
+.cal-day.sel{ background:var(--fill); color:#fff; font-weight:600; }
+.cal-time{
+  display:flex; align-items:center; gap:8px;
+  margin-top:9px; padding:9px 2px 0; border-top:1px solid var(--line);
+}
+.cal-time .lab{ display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:500; color:var(--ink-2); }
+.cal-time input{
+  margin-left:auto; width:112px; font:inherit; font-size:13px; color:var(--ink);
+  border:1px solid var(--line-2); border-radius:8px; padding:5px 7px; outline:none;
+  background:#fff; font-variant-numeric:tabular-nums;
+}
+.cal-time input:focus{ border-color:#C9C9CE; box-shadow:0 0 0 3px rgba(23,23,24,.05); }
+.cal-time .x{
+  width:24px; height:24px; flex:none; border:0; border-radius:7px; background:transparent;
+  color:var(--ink-3); cursor:pointer; display:grid; place-items:center;
+}
+.cal-time .x:hover{ background:var(--hover); color:var(--rose); }
+.cal-time .x.gone{ visibility:hidden; }
+
+.cal-foot{ display:flex; gap:5px; padding:9px 0 2px; margin-top:9px; }
+.cal-quick{
+  flex:1; padding:6px 4px; border:1px solid var(--line-2); border-radius:8px; background:#fff;
+  font:inherit; font-size:12.5px; font-weight:500; color:var(--ink); cursor:pointer;
+}
+.cal-quick:hover{ background:var(--hover); }
+.cal-quick.clear{ color:var(--ink-2); }
+
+/* ---------- task groups ---------- */
+.group-head{ display:flex; align-items:center; gap:7px; padding:7px 8px 6px; margin-top:16px; }
+.group-head .twist{
+  width:22px; height:22px; border:0; border-radius:6px; background:transparent;
+  color:var(--ink-2); cursor:pointer; display:grid; place-items:center;
+  transition:transform .18s ease;
+}
+.group-head .twist:hover{ background:var(--hover); }
+.group-head .twist.closed{ transform:rotate(-90deg); }
+.group-head h2{ font-size:15px; font-weight:600; letter-spacing:-.01em; display:flex; align-items:center; gap:7px; }
+.group-head .count{ color:var(--ink-3); font-size:13px; font-variant-numeric:tabular-nums; font-weight:500; }
+
+.rows{ display:flex; flex-direction:column; }
+.wrap.shrink{ overflow:hidden; transition:height 300ms cubic-bezier(.4,0,.2,1), opacity 260ms ease; }
+
+.row{
+  display:flex; align-items:flex-start; gap:11px;
+  padding:11px 10px 11px 6px; border-radius:10px; background:#fff;
+  position:relative; transition:background .12s;
+}
+.row:hover{ background:var(--hover); }
+.row.dragging{
+  pointer-events:none; z-index:30; background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.06), 0 16px 34px rgba(0,0,0,.12);
+}
+.handle{
+  width:18px; height:22px; flex:none; margin-top:1px; border:0; background:transparent;
+  color:var(--ink-3); cursor:grab; opacity:0; transition:opacity .14s;
+  display:grid; place-items:center; padding:0; touch-action:none;
+}
+.handle:active{ cursor:grabbing; }
+.row:hover .handle{ opacity:1; }
+.handle.hidden{ visibility:hidden; }
+@media (pointer:coarse){ .handle{ opacity:.5; } }
+
+.box{
+  width:19px; height:19px; flex:none; margin-top:2px; border-radius:6px;
+  border:1.6px solid #D6D6DB; background:#fff; cursor:pointer; padding:0;
+  display:grid; place-items:center;
+  transition:background .2s ease, border-color .2s ease, transform .16s ease;
+}
+.box:hover{ border-color:#A9A9B1; }
+.box:active{ transform:scale(.88); }
+.box.on{ background:var(--fill); border-color:var(--fill); }
+.box svg{ opacity:0; transform:scale(.5); transition:opacity .18s ease, transform .22s cubic-bezier(.3,1.5,.5,1); }
+.box.on svg{ opacity:1; transform:scale(1); }
+
+.body{ flex:1; min-width:0; padding-top:1px; }
+.ttl{
+  font-size:14.7px; line-height:1.48; color:var(--ink);
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;
+  background-position:0 .66em;
+  background-size:0% 1.3px;
+  -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  transition:background-size 360ms cubic-bezier(.45,0,.2,1), color 360ms ease;
+}
+.ttl.struck{ background-size:100% 1.3px; color:var(--ink-3); }
+.meta{ margin-top:2px; font-size:12px; color:var(--ink-3); display:flex; gap:7px; align-items:center; }
+
+.tail{ margin-left:auto; display:flex; align-items:center; gap:4px; padding-left:8px; flex:none; }
+.due{
+  font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:7px;
+  background:var(--sel); color:var(--ink-2); white-space:nowrap;
+  border:0; cursor:pointer; font-family:inherit;
+}
+.due:hover{ background:var(--line-2); }
+.due.hot{ background:var(--rose-bg); color:var(--rose); }
+.due.hot:hover{ background:#FBDFE2; }
+.trash{
+  width:26px; height:26px; border:0; border-radius:7px; background:transparent;
+  color:var(--ink-3); cursor:pointer; opacity:0; display:grid; place-items:center;
+  transition:opacity .14s, color .14s, background .14s;
+}
+.row:hover .trash{ opacity:1; }
+.trash:hover{ background:var(--hover); color:var(--rose); }
+@media (pointer:coarse){ .trash{ opacity:.6; } }
+
+@keyframes popOut{
+  0%{ transform:scale(1); opacity:1 }
+  32%{ transform:scale(1.045); opacity:1 }
+  100%{ transform:scale(.82); opacity:0 }
+}
+.row.pop{ animation:popOut 300ms cubic-bezier(.34,.85,.5,1) forwards; pointer-events:none; }
+@keyframes enterFade{
+  from{ opacity:0; transform:translateY(-7px) scale(.97) }
+  to{ opacity:1; transform:none }
+}
+.row.enter{ animation:enterFade 340ms cubic-bezier(.2,.8,.3,1) both; }
+
+/* ---------- completed section ---------- */
+.done-sec{ margin-top:30px; padding-top:4px; border-top:1px solid var(--line); }
+.done-sec .row{ opacity:.6; }
+.done-sec .row:hover{ opacity:.85; }
+.clear-done{
+  margin-left:auto; border:0; background:transparent; color:var(--ink-3);
+  font:inherit; font-size:13px; font-weight:500; cursor:pointer; padding:4px 8px; border-radius:7px;
+}
+.clear-done:hover{ background:var(--hover); color:var(--rose); }
+
+/* ---------- empty ---------- */
+.empty{ display:flex; flex-direction:column; align-items:center; gap:12px; padding:64px 20px 56px; text-align:center; }
+.empty .ring{ opacity:.3; }
+.empty h3{ font-size:16px; font-weight:600; }
+.empty p{ margin:0; font-size:14px; color:var(--ink-2); max-width:34ch; line-height:1.5; }
+
+/* ---------- mobile ---------- */
+.topbar{ display:none; }
+.scrim{ display:none; }
+@media (max-width:899px){
+  .main{ border-left:0; }
+  .main-inner{ padding:18px 16px 140px; }
+  .greet{ font-size:23px; }
+  .topbar{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:#fff; z-index:20;
+  }
+  .topbar h1{ font-size:15px; font-weight:600; display:flex; align-items:center; gap:7px; }
+  .topbar .count{ color:var(--ink-3); font-size:13px; font-weight:500; }
+  .sidebar{
+    position:fixed; inset:0 auto 0 0; width:84%; max-width:318px; z-index:50;
+    transform:translateX(-101%); transition:transform 280ms cubic-bezier(.3,.9,.3,1);
+    box-shadow:0 0 44px rgba(0,0,0,.16); overflow-y:auto;
+  }
+  .sidebar.open{ transform:none; }
+  .scrim{
+    display:block; position:fixed; inset:0; z-index:45; background:rgba(20,20,22,.34);
+    opacity:0; pointer-events:none; transition:opacity 260ms ease; border:0; padding:0;
+  }
+  .scrim.open{ opacity:1; pointer-events:auto; }
+  .composer{ gap:6px; padding:8px 8px 8px 11px; }
+  .composer .chip.list-chip .cap{ display:none; }
+  .composer .chip{ padding:0 8px; }
+  .composer .chip .cap{ max-width:96px; }
+  .tail{ gap:2px; }
+}
+
+.dragging-active, .dragging-active *{ user-select:none; -webkit-user-select:none; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+</style>
+
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo, useLayoutEffect, useCallback } = React;
+
+/* ============ date helpers ============ */
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseYMD = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const DOW = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+function useToday() {
+  const [t, setT] = useState(() => ymd(new Date()));
+  useEffect(() => {
+    const id = setInterval(() => setT(ymd(new Date())), 60000);
+    return () => clearInterval(id);
+  }, []);
+  return t;
+}
+
+function dueLabel(iso, today) {
+  if (!iso) return null;
+  const t = parseYMD(today), d = parseYMD(iso);
+  const diff = Math.round((d - t) / 86400000);
+  if (diff === 0) return "Today";
+  if (diff === 1) return "Tomorrow";
+  if (diff === -1) return "Yesterday";
+  if (diff > 1 && diff < 7) return DAYS[d.getDay()];
+  const sameYear = d.getFullYear() === t.getFullYear();
+  return `${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3)}${sameYear ? "" : " " + d.getFullYear()}`;
+}
+
+function fmtTime(hhmm) {
+  if (!hhmm) return null;
+  const [h, m] = hhmm.split(":").map(Number);
+  if (Number.isNaN(h) || Number.isNaN(m)) return null;
+  const suffix = h < 12 ? "AM" : "PM";
+  const hour = h % 12 === 0 ? 12 : h % 12;
+  return `${hour}:${pad(m)} ${suffix}`;
+}
+
+function whenLabel(iso, time, today) {
+  const d = dueLabel(iso, today);
+  const t = fmtTime(time);
+  if (d && t) return `${d}, ${t}`;
+  return d || t || null;
+}
+
+/* ============ storage ============ */
+const KEY = "exhale.v1";
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+function seedState() {
+  const t = new Date();
+  const today = ymd(t), tomorrow = ymd(addDays(t, 1)), friday = ymd(addDays(t, 4));
+  return {
+    name: "Cameron",
+    lists: [
+      { id: "personal", emoji: "👤", name: "Personal" },
+      { id: "work", emoji: "💼", name: "Work" },
+    ],
+    tasks: [
+      { id: uid(), title: "Finish the sales presentation for the client meeting", listId: "work", due: today, time: "14:00", completed: false, completedAt: null },
+      { id: uid(), title: "Send follow-up emails to potential leads", listId: "work", due: today, time: null, completed: false, completedAt: null },
+      { id: uid(), title: "Yoga class at the studio", listId: "personal", due: today, time: "18:30", completed: false, completedAt: null },
+      { id: uid(), title: "Create new exploration UI design", listId: "personal", due: tomorrow, time: null, completed: false, completedAt: null },
+      { id: uid(), title: "Draft the Q4 roadmap one-pager", listId: "work", due: friday, time: "09:00", completed: false, completedAt: null },
+      { id: uid(), title: "Re-pot the fiddle-leaf fig", listId: "personal", due: null, time: null, completed: false, completedAt: null },
+      { id: uid(), title: "Attend the team meeting", listId: "work", due: today, time: "10:30", completed: true, completedAt: Date.now() - 5400000 },
+      { id: uid(), title: "Review and approve the marketing budget for Q4", listId: "work", due: today, time: null, completed: true, completedAt: Date.now() - 9000000 },
+    ],
+    collapsed: {},
+  };
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return seedState();
+    const s = JSON.parse(raw);
+    if (!s || !Array.isArray(s.tasks) || !Array.isArray(s.lists)) return seedState();
+    return { name: s.name || "there", lists: s.lists, tasks: s.tasks, collapsed: s.collapsed || {} };
+  } catch (e) { return seedState(); }
+}
+
+/* ============ icons ============ */
+const Ico = {
+  check: p => <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M20 6 9 17l-5-5" /></svg>,
+  cal: p => <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="3" y="5" width="18" height="16" rx="3" /><path d="M8 3v4M16 3v4M3 10h18" /></svg>,
+  chev: p => <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m6 9 6 6 6-6" /></svg>,
+  left: p => <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m15 18-6-6 6-6" /></svg>,
+  right: p => <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m9 18 6-6-6-6" /></svg>,
+  plus: p => <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" {...p}><path d="M12 5v14M5 12h14" /></svg>,
+  arrow: p => <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M5 12h13M13 6l6 6-6 6" /></svg>,
+  grip: p => <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" {...p}><circle cx="5.5" cy="3.5" r="1.35" /><circle cx="10.5" cy="3.5" r="1.35" /><circle cx="5.5" cy="8" r="1.35" /><circle cx="10.5" cy="8" r="1.35" /><circle cx="5.5" cy="12.5" r="1.35" /><circle cx="10.5" cy="12.5" r="1.35" /></svg>,
+  trash: p => <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" /></svg>,
+  menu: p => <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" {...p}><path d="M4 7h16M4 12h16M4 17h16" /></svg>,
+  ring: p => <svg viewBox="0 0 24 24" width="34" height="34" fill="none" {...p}><circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.4" opacity=".5" /><circle cx="12" cy="12" r="3.4" fill="currentColor" /></svg>,
+};
+
+/* ============ popover plumbing ============ */
+function useOutside(ref, onClose, active) {
+  useEffect(() => {
+    if (!active) return;
+    const down = e => { if (ref.current && !ref.current.contains(e.target)) onClose(); };
+    const key = e => { if (e.key === "Escape") { e.stopPropagation(); onClose(); } };
+    document.addEventListener("mousedown", down);
+    document.addEventListener("touchstart", down);
+    document.addEventListener("keydown", key);
+    return () => {
+      document.removeEventListener("mousedown", down);
+      document.removeEventListener("touchstart", down);
+      document.removeEventListener("keydown", key);
+    };
+  }, [ref, onClose, active]);
+}
+
+function Popwrap({ open, onClose, align = "right", up = false, trigger, children, className = "" }) {
+  const ref = useRef(null);
+  useOutside(ref, onClose, open);
+  return (
+    <div className={"popwrap " + className} ref={ref}>
+      {trigger}
+      {open && <div className={`pop ${align}${up ? " up" : ""}`}>{children}</div>}
+    </div>
+  );
+}
+
+/* ============ calendar ============ */
+function Calendar({ value, time, today, onPick, onTime }) {
+  const [cursor, setCursor] = useState(() => {
+    const base = value ? parseYMD(value) : parseYMD(today);
+    return new Date(base.getFullYear(), base.getMonth(), 1);
+  });
+
+  const cells = useMemo(() => {
+    const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const offset = (first.getDay() + 6) % 7; // Monday-first
+    const start = addDays(first, -offset);
+    return Array.from({ length: 42 }, (_, i) => addDays(start, i));
+  }, [cursor]);
+
+  const shift = n => setCursor(c => new Date(c.getFullYear(), c.getMonth() + n, 1));
+
+  return (
+    <div className="cal">
+      <div className="cal-head">
+        <button className="cal-nav" onClick={() => shift(-1)} aria-label="Previous month"><Ico.left /></button>
+        <span className="cal-title">{MONTHS[cursor.getMonth()]} {cursor.getFullYear()}</span>
+        <button className="cal-nav" onClick={() => shift(1)} aria-label="Next month"><Ico.right /></button>
+      </div>
+      <div className="cal-grid">
+        {DOW.map(d => <div key={d} className="cal-dow">{d[0]}</div>)}
+        {cells.map(d => {
+          const iso = ymd(d);
+          const cls = ["cal-day"];
+          if (d.getMonth() !== cursor.getMonth()) cls.push("dim");
+          if (iso === today) cls.push("today");
+          if (iso === value) cls.push("sel");
+          return (
+            <button key={iso} className={cls.join(" ")} onClick={() => onPick(iso)}>{d.getDate()}</button>
+          );
+        })}
+      </div>
+      <div className="cal-time">
+        <span className="lab"><span aria-hidden="true">⏰</span>Time</span>
+        <input
+          type="time" value={time || ""} aria-label="Time"
+          onChange={e => onTime(e.target.value || null)}
+        />
+        <button
+          className={"x" + (time ? "" : " gone")} aria-label="Clear time"
+          tabIndex={time ? 0 : -1} onClick={() => onTime(null)}
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <div className="cal-foot">
+        <button className="cal-quick" onClick={() => onPick(today)}>Today</button>
+        <button className="cal-quick" onClick={() => onPick(ymd(addDays(parseYMD(today), 1)))}>Tomorrow</button>
+        <button className="cal-quick clear" onClick={() => onPick(null)}>Clear</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============ buckets ============ */
+const BUCKETS = [
+  { key: "overdue", emoji: "⏰", label: "Overdue" },
+  { key: "today", emoji: "🗓️", label: "Today" },
+  { key: "tomorrow", emoji: "🌤️", label: "Tomorrow" },
+  { key: "upcoming", emoji: "📆", label: "Upcoming" },
+  { key: "someday", emoji: "💭", label: "Someday" },
+];
+
+function bucketOf(task, today) {
+  if (!task.due) return "someday";
+  if (task.due < today) return "overdue";
+  if (task.due === today) return "today";
+  if (task.due === ymd(addDays(parseYMD(today), 1))) return "tomorrow";
+  return "upcoming";
+}
+
+/* ============ task row ============ */
+function Row({ task, list, fx, today, dragging, sortable, onToggle, onDelete, onSetWhen, onDrag, showList }) {
+  const wrapRef = useRef(null);
+  const [calOpen, setCalOpen] = useState(false);
+
+  const undoing = fx === "unstrike" || fx === "popUp";
+  const struck = task.completed ? !undoing : (fx === "strike" || fx === "popOut");
+  const popping = fx === "popOut" || fx === "popUp";
+
+  useLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    if (popping) {
+      el.style.height = el.offsetHeight + "px";
+      requestAnimationFrame(() => {
+        if (!wrapRef.current) return;
+        wrapRef.current.style.height = "0px";
+        wrapRef.current.style.opacity = "0";
+      });
+    } else {
+      el.style.height = "";
+      el.style.opacity = "";
+    }
+  }, [popping]);
+
+  const cls = ["row"];
+  if (popping) cls.push("pop");
+  if (fx === "enter") cls.push("enter");
+  if (dragging) cls.push("dragging");
+
+  const label = whenLabel(task.due, task.time, today);
+  const hot = task.due && task.due <= today;
+
+  return (
+    <li className={"wrap" + (popping ? " shrink" : "")} ref={wrapRef}>
+      <div className={cls.join(" ")} data-row={task.id} data-drop={sortable ? "1" : "0"}>
+        <button
+          className={"handle" + (sortable ? "" : " hidden")}
+          aria-label="Reorder task"
+          tabIndex={sortable ? 0 : -1}
+          onPointerDown={sortable ? e => onDrag(e, task.id) : undefined}
+        ><Ico.grip /></button>
+
+        <button
+          className={"box" + (struck ? " on" : "")}
+          role="checkbox"
+          aria-checked={task.completed}
+          aria-label={task.completed ? "Mark as not done" : "Mark as done"}
+          onClick={() => onToggle(task.id)}
+        ><Ico.check /></button>
+
+        <div className="body">
+          <span className={"ttl" + (struck ? " struck" : "")}>{task.title}</span>
+          {showList && list && <div className="meta">{list.emoji} {list.name}</div>}
+        </div>
+
+        <div className="tail">
+          <Popwrap
+            open={calOpen}
+            onClose={() => setCalOpen(false)}
+            align="right"
+            trigger={
+              label
+                ? <button className={"due" + (hot ? " hot" : "")} onClick={() => setCalOpen(o => !o)}>{label}</button>
+                : <button className="iconbtn" aria-label="Set due date and time" onClick={() => setCalOpen(o => !o)}><Ico.cal width="15" height="15" /></button>
+            }
+          >
+            <Calendar
+              value={task.due} time={task.time} today={today}
+              onPick={d => { onSetWhen(task.id, d, d ? task.time : null); setCalOpen(false); }}
+              onTime={tm => onSetWhen(task.id, task.due || today, tm)}
+            />
+          </Popwrap>
+          <button className="trash" aria-label="Delete task" onClick={() => onDelete(task.id)}><Ico.trash /></button>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+/* ============ app ============ */
+const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+const MOD = isMac ? "⌘" : "Ctrl";
+const EMOJIS = ["📌", "🌿", "🎧", "🏃", "📚", "🍳", "✈️", "💡", "🎯", "🛒"];
+const VIEWS = [
+  { id: "home", emoji: "🏠", name: "Home" },
+  { id: "completed", emoji: "✅", name: "Completed" },
+  { id: "today", emoji: "🗓️", name: "Today" },
+];
+
+function App() {
+  const boot = useRef(load()).current;
+  const today = useToday();
+
+  const [name, setName] = useState(boot.name);
+  const [lists, setLists] = useState(boot.lists);
+  const [tasks, setTasks] = useState(boot.tasks);
+  const [collapsed, setCollapsed] = useState(boot.collapsed);
+
+  const [view, setView] = useState("home");
+  const [fx, setFx] = useState({});
+  const [dragId, setDragId] = useState(null);
+  const [drawer, setDrawer] = useState(false);
+
+  const [draft, setDraft] = useState("");
+  const [draftDue, setDraftDue] = useState(null);
+  const [draftTime, setDraftTime] = useState(null);
+  const [draftList, setDraftList] = useState(boot.lists[0]?.id || null);
+  const [listPop, setListPop] = useState(false);
+  const [datePop, setDatePop] = useState(false);
+
+  const [adding, setAdding] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newEmoji, setNewEmoji] = useState(EMOJIS[0]);
+  const [menuFor, setMenuFor] = useState(null);
+  const [confirmDel, setConfirmDel] = useState(null);
+  const [renameFor, setRenameFor] = useState(null);
+  const [renameVal, setRenameVal] = useState("");
+  const [editingName, setEditingName] = useState(false);
+  const [doneOpen, setDoneOpen] = useState(true);
+
+  const inputRef = useRef(null);
+  const newListRef = useRef(null);
+  const reduced = useRef(typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches).current;
+  const T = reduced ? { s: 0, p: 0, e: 0 } : { s: 360, p: 300, e: 340 };
+
+  useEffect(() => {
+    try { localStorage.setItem(KEY, JSON.stringify({ name, lists, tasks, collapsed })); } catch (e) {}
+  }, [name, lists, tasks, collapsed]);
+
+  useEffect(() => { if (adding) newListRef.current?.focus(); }, [adding]);
+
+  useEffect(() => {
+    const h = e => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "l") { e.preventDefault(); setAdding(true); setDrawer(true); }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, []);
+
+  /* --- derived --- */
+  const listById = useMemo(() => Object.fromEntries(lists.map(l => [l.id, l])), [lists]);
+  const activeTasks = useMemo(() => tasks.filter(t => !t.completed), [tasks]);
+
+  const counts = useMemo(() => {
+    const c = { home: activeTasks.length, today: activeTasks.filter(t => t.due === today).length, completed: tasks.filter(t => t.completed).length };
+    lists.forEach(l => { c[l.id] = activeTasks.filter(t => t.listId === l.id).length; });
+    return c;
+  }, [tasks, activeTasks, lists, today]);
+
+  const inScope = useCallback(t => {
+    if (view === "home" || view === "completed") return true;
+    if (view === "today") return t.due === today;
+    return t.listId === view;
+  }, [view, today]);
+
+  const mainTasks = useMemo(() => {
+    if (view === "completed") return tasks.filter(t => t.completed);
+    return tasks.filter(t => !t.completed && inScope(t));
+  }, [tasks, view, inScope]);
+
+  const doneTasks = useMemo(() => {
+    if (view === "completed") return [];
+    return tasks.filter(t => t.completed && inScope(t)).sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
+  }, [tasks, view, inScope]);
+
+  const groups = useMemo(() => {
+    if (view === "completed") return [{ key: "done", emoji: "✅", label: "Completed", items: mainTasks.slice().sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0)) }];
+    return BUCKETS.map(b => ({ ...b, items: mainTasks.filter(t => bucketOf(t, today) === b.key) })).filter(g => g.items.length);
+  }, [mainTasks, view, today]);
+
+  const viewMeta = useMemo(() => {
+    const v = VIEWS.find(v => v.id === view);
+    if (v) return v;
+    return listById[view] || VIEWS[0];
+  }, [view, listById]);
+
+  /* --- actions --- */
+  function addTask(e) {
+    e?.preventDefault();
+    const title = draft.trim();
+    if (!title) return;
+    const listId = draftList && listById[draftList] ? draftList : (lists[0]?.id || null);
+    const due = draftDue ?? (view === "today" ? today : null);
+    setTasks(prev => [...prev, { id: uid(), title, listId, due, time: due ? draftTime : null, completed: false, completedAt: null }]);
+    setDraft("");
+    setDraftDue(null);
+    setDraftTime(null);
+    inputRef.current?.focus();
+  }
+
+  function commitToggle(id) {
+    setTasks(prev => prev.map(t => t.id === id
+      ? { ...t, completed: !t.completed, completedAt: !t.completed ? Date.now() : null }
+      : t));
+  }
+
+  function toggle(id) {
+    if (fx[id]) return;
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    if (reduced) { commitToggle(id); return; }
+    const a = task.completed ? "unstrike" : "strike";
+    const b = task.completed ? "popUp" : "popOut";
+    setFx(f => ({ ...f, [id]: a }));
+    setTimeout(() => {
+      setFx(f => ({ ...f, [id]: b }));
+      setTimeout(() => {
+        commitToggle(id);
+        setDoneOpen(true);
+        setFx(f => ({ ...f, [id]: "enter" }));
+        setTimeout(() => setFx(f => { const n = { ...f }; delete n[id]; return n; }), T.e);
+      }, T.p);
+    }, T.s);
+  }
+
+  const removeTask = id => setTasks(prev => prev.filter(t => t.id !== id));
+  const setWhen = (id, due, time) =>
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, due: due || null, time: due ? (time || null) : null } : t));
+  const clearDone = () => setTasks(prev => prev.filter(t => !(t.completed && inScope(t))));
+
+  function addList() {
+    const n = newName.trim();
+    if (!n) { setAdding(false); return; }
+    const id = uid();
+    setLists(prev => [...prev, { id, emoji: newEmoji, name: n }]);
+    setNewName("");
+    setNewEmoji(EMOJIS[Math.floor(Math.random() * EMOJIS.length)]);
+    setAdding(false);
+    setView(id);
+    setDraftList(id);
+  }
+
+  function commitRename(id) {
+    const v = renameVal.trim();
+    if (v) setLists(prev => prev.map(l => l.id === id ? { ...l, name: v } : l));
+    setRenameFor(null);
+    setMenuFor(null);
+  }
+
+  function deleteList(id) {
+    setTasks(prev => prev.filter(t => t.listId !== id));
+    setLists(prev => prev.filter(l => l.id !== id));
+    setMenuFor(null);
+    setConfirmDel(null);
+    if (view === id) setView("home");
+    if (draftList === id) setDraftList(lists.find(l => l.id !== id)?.id || null);
+  }
+
+  /* --- drag to reorder --- */
+  const drag = useRef(null);
+
+  const moveOver = useCallback((id, overId) => {
+    setTasks(prev => {
+      const from = prev.findIndex(t => t.id === id);
+      const to = prev.findIndex(t => t.id === overId);
+      if (from < 0 || to < 0 || from === to) return prev;
+      const next = prev.slice();
+      const [moved] = next.splice(from, 1);
+      const overDue = prev[to].due ?? null;
+      next.splice(to, 0, { ...moved, due: overDue, time: overDue ? (moved.time || null) : null });
+      return next;
+    });
+  }, []);
+
+  function onDrag(e, id) {
+    if (e.button !== undefined && e.button !== 0) return;
+    const el = e.currentTarget.closest("[data-row]");
+    if (!el) return;
+    e.preventDefault();
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+    drag.current = { id, el, ty: 0, handle: e.currentTarget, pid: e.pointerId };
+    document.body.classList.add("dragging-active");
+    setDragId(id);
+
+    const move = ev => {
+      const d = drag.current;
+      if (!d) return;
+      ev.preventDefault();
+      const r = d.el.getBoundingClientRect();
+      d.ty += ev.clientY - (r.top + r.height / 2);
+      d.el.style.transform = `translateY(${d.ty}px)`;
+      const under = document.elementFromPoint(ev.clientX, ev.clientY);
+      const target = under && under.closest ? under.closest("[data-row]") : null;
+      if (target && target.dataset.drop === "1" && target.dataset.row !== d.id) {
+        moveOver(d.id, target.dataset.row);
+      }
+    };
+
+    const up = () => {
+      const d = drag.current;
+      if (d) {
+        d.el.style.transition = "transform 170ms cubic-bezier(.3,.9,.3,1)";
+        d.el.style.transform = "";
+        setTimeout(() => { if (d.el) { d.el.style.transition = ""; } }, 200);
+        try { d.handle.releasePointerCapture(d.pid); } catch (err) {}
+      }
+      drag.current = null;
+      document.body.classList.remove("dragging-active");
+      setDragId(null);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+    };
+
+    window.addEventListener("pointermove", move, { passive: false });
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+  }
+
+  /* --- greeting --- */
+  const now = new Date();
+  const hour = now.getHours();
+  const part = hour < 12 ? "Morning" : hour < 18 ? "Afternoon" : "Evening";
+  const partEmoji = hour < 12 ? "☀️" : hour < 18 ? "🌤️" : "🌙";
+  const dateLine = `It's ${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+  const nameField = editingName
+    ? <input
+        className="name-input" autoFocus defaultValue={name}
+        onBlur={e => { const v = e.target.value.trim(); if (v) setName(v); setEditingName(false); }}
+        onKeyDown={e => { if (e.key === "Enter") e.target.blur(); if (e.key === "Escape") setEditingName(false); }}
+      />
+    : <button className="name-btn" onClick={() => setEditingName(true)} title="Change your name">{name}</button>;
+
+  const navBtn = (id, emoji, label, count) => (
+    <div className={"nav-item" + (menuFor === id ? " menu-open" : "")} key={id}>
+      <button
+        className={"nav" + (view === id ? " active" : "")}
+        onClick={() => { setView(id); setDrawer(false); if (listById[id]) setDraftList(id); }}
+      >
+        <span className="emoji" aria-hidden="true">{emoji}</span>
+        <span className="label">{label}</span>
+        <span className="count">{count}</span>
+      </button>
+      {listById[id] && (
+        <Popwrap
+          open={menuFor === id}
+          onClose={() => { setMenuFor(null); setConfirmDel(null); setRenameFor(null); }}
+          align="right"
+          trigger={
+            <button className="dots" aria-label={`Options for ${label}`} onClick={() => { setMenuFor(m => m === id ? null : id); setConfirmDel(null); setRenameFor(null); }}>···</button>
+          }
+        >
+          {renameFor === id ? (
+            <div className="newlist" style={{ padding: 2 }}>
+              <input
+                autoFocus value={renameVal}
+                onChange={e => setRenameVal(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") commitRename(id); if (e.key === "Escape") setRenameFor(null); }}
+              />
+              <div style={{ display: "flex", gap: 6 }}>
+                <button className="cal-quick" onClick={() => commitRename(id)}>Save</button>
+                <button className="cal-quick clear" onClick={() => setRenameFor(null)}>Cancel</button>
+              </div>
+            </div>
+          ) : confirmDel === id ? (
+            <>
+              <div style={{ padding: "8px 9px", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.45 }}>
+                Delete “{label}” and its {counts[id]} task{counts[id] === 1 ? "" : "s"}?
+              </div>
+              <button className="pop-item danger" onClick={() => deleteList(id)}>Yes, delete</button>
+              <button className="pop-item" onClick={() => setConfirmDel(null)}>Keep it</button>
+            </>
+          ) : (
+            <>
+              <button className="pop-item" onClick={() => { setRenameVal(label); setRenameFor(id); }}>Rename</button>
+              <div className="pop-sep" />
+              <button className="pop-item danger" onClick={() => setConfirmDel(id)}>Delete list</button>
+            </>
+          )}
+        </Popwrap>
+      )}
+    </div>
+  );
+
+  const currentList = listById[draftList];
+
+  return (
+    <div className="frame">
+      <div className="card">
+        <button className={"scrim" + (drawer ? " open" : "")} aria-label="Close menu" onClick={() => setDrawer(false)} />
+
+        <aside className={"sidebar" + (drawer ? " open" : "")}>
+          <div className="brand">
+            <div className="mark">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" stroke="#fff" strokeWidth="1.5" opacity=".45" />
+                <circle cx="12" cy="12" r="3.2" fill="#fff" />
+              </svg>
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div className="brand-name">Exhale</div>
+              <div className="brand-sub" style={{ cursor: "default" }}>{name}</div>
+            </div>
+          </div>
+
+          <div>
+            <div className="group-label">Private</div>
+            <div className="nav-list">
+              {VIEWS.map(v => navBtn(v.id, v.emoji, v.name, counts[v.id]))}
+              {lists.map(l => navBtn(l.id, l.emoji, l.name, counts[l.id]))}
+
+              {adding ? (
+                <div className="newlist">
+                  <input
+                    ref={newListRef} value={newName} placeholder="List name"
+                    onChange={e => setNewName(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") addList(); if (e.key === "Escape") { setAdding(false); setNewName(""); } }}
+                  />
+                  <div className="emoji-row">
+                    {EMOJIS.map(em => (
+                      <button key={em} className={"emoji-pick" + (em === newEmoji ? " on" : "")} onClick={() => setNewEmoji(em)}>{em}</button>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button className="cal-quick" onClick={addList}>Create list</button>
+                    <button className="cal-quick clear" onClick={() => { setAdding(false); setNewName(""); }}>Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <button className="add-row" onClick={() => setAdding(true)}>
+                  <Ico.plus />
+                  <span>Create new list</span>
+                  <span className="kbds"><span className="kbd">{MOD}</span><span className="kbd">L</span></span>
+                </button>
+              )}
+            </div>
+          </div>
+        </aside>
+
+        <main className="main">
+          <div className="topbar">
+            <button className="iconbtn" aria-label="Open lists" onClick={() => setDrawer(true)}><Ico.menu /></button>
+            <h1><span aria-hidden="true">{viewMeta.emoji}</span>{viewMeta.name}</h1>
+            <span className="count" style={{ marginLeft: "auto" }}>{counts[view] ?? 0}</span>
+          </div>
+
+          <div className="main-scroll">
+            <div className="main-inner">
+              <h1 className="greet">Good {part}, {nameField} {partEmoji}</h1>
+              <div className="today-line">{dateLine}</div>
+
+              <form className="composer" onSubmit={addTask}>
+                <div className="ghost-box" aria-hidden="true" />
+                <input
+                  ref={inputRef} className="task-input" value={draft}
+                  placeholder="What needs doing?"
+                  onChange={e => setDraft(e.target.value)}
+                  aria-label="New task"
+                />
+
+                <Popwrap
+                  open={datePop} onClose={() => setDatePop(false)} align="right"
+                  trigger={
+                    draftDue || draftTime
+                      ? <button type="button" className="chip date-chip set" onClick={() => setDatePop(o => !o)}>
+                          <Ico.cal width="14" height="14" /><span className="cap">{whenLabel(draftDue, draftTime, today)}</span>
+                        </button>
+                      : <button type="button" className={"iconbtn" + (datePop ? " on" : "")} aria-label="Set due date and time" onClick={() => setDatePop(o => !o)}>
+                          <Ico.cal />
+                        </button>
+                  }
+                >
+                  <Calendar
+                    value={draftDue} time={draftTime} today={today}
+                    onPick={d => { setDraftDue(d); if (!d) setDraftTime(null); setDatePop(false); inputRef.current?.focus(); }}
+                    onTime={tm => { setDraftTime(tm); if (tm && !draftDue) setDraftDue(today); }}
+                  />
+                </Popwrap>
+
+                {lists.length > 0 && (
+                  <Popwrap
+                    open={listPop} onClose={() => setListPop(false)} align="right"
+                    trigger={
+                      <button type="button" className="chip list-chip" onClick={() => setListPop(o => !o)}>
+                        <span aria-hidden="true">{currentList?.emoji || "📌"}</span>
+                        <span className="cap">{currentList?.name || "List"}</span>
+                        <Ico.chev width="14" height="14" />
+                      </button>
+                    }
+                  >
+                    {lists.map(l => (
+                      <button key={l.id} type="button" className={"pop-item" + (l.id === draftList ? " sel" : "")}
+                        onClick={() => { setDraftList(l.id); setListPop(false); }}>
+                        <span aria-hidden="true">{l.emoji}</span>{l.name}
+                      </button>
+                    ))}
+                  </Popwrap>
+                )}
+
+                <button className="submit" type="submit" disabled={!draft.trim()} aria-label="Add task"><Ico.arrow /></button>
+              </form>
+
+              {groups.length === 0 && doneTasks.length === 0 && (
+                <div className="empty">
+                  <div className="ring"><Ico.ring /></div>
+                  <h3>Nothing here</h3>
+                  <p>{view === "completed" ? "Finish something and it will land here." : "Add a task above, or take the breath you earned."}</p>
+                </div>
+              )}
+
+              {groups.map(g => {
+                const shut = !!collapsed[view + ":" + g.key];
+                return (
+                  <section key={g.key}>
+                    <div className="group-head">
+                      <button
+                        className={"twist" + (shut ? " closed" : "")}
+                        aria-expanded={!shut}
+                        aria-label={`${shut ? "Expand" : "Collapse"} ${g.label}`}
+                        onClick={() => setCollapsed(c => ({ ...c, [view + ":" + g.key]: !shut }))}
+                      ><Ico.chev /></button>
+                      <h2><span aria-hidden="true">{g.emoji}</span>{g.label}</h2>
+                      <span className="count">{g.items.length}</span>
+                    </div>
+                    {!shut && (
+                      <ul className="rows">
+                        {g.items.map(t => (
+                          <Row
+                            key={t.id} task={t} list={listById[t.listId]} fx={fx[t.id]} today={today}
+                            dragging={dragId === t.id} sortable={view !== "completed" && !t.completed}
+                            showList={view === "home" || view === "today" || view === "completed"}
+                            onToggle={toggle} onDelete={removeTask} onSetWhen={setWhen} onDrag={onDrag}
+                          />
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                );
+              })}
+
+              {doneTasks.length > 0 && (
+                <section className="done-sec">
+                  <div className="group-head">
+                    <button
+                      className={"twist" + (doneOpen ? "" : " closed")}
+                      aria-expanded={doneOpen}
+                      aria-label={`${doneOpen ? "Collapse" : "Expand"} completed`}
+                      onClick={() => setDoneOpen(o => !o)}
+                    ><Ico.chev /></button>
+                    <h2><span aria-hidden="true">✅</span>Completed</h2>
+                    <span className="count">{doneTasks.length}</span>
+                    <button className="clear-done" onClick={clearDone}>Clear</button>
+                  </div>
+                  {doneOpen && (
+                    <ul className="rows">
+                      {doneTasks.map(t => (
+                        <Row
+                          key={t.id} task={t} list={listById[t.listId]} fx={fx[t.id]} today={today}
+                          dragging={false} sortable={false}
+                          showList={view === "home" || view === "today"}
+                          onToggle={toggle} onDelete={removeTask} onSetWhen={setWhen} onDrag={onDrag}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              )}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
